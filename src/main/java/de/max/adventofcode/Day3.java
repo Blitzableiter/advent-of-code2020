@@ -3,16 +3,9 @@ package de.max.adventofcode;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Day3
 {
+
   public static void main(String[] args)
   {
     part1();

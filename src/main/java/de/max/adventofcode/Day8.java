@@ -5,14 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Day8
 {
 

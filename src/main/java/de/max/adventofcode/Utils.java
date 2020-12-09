@@ -7,14 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Utils
 {
   public static List<String> getListFromFilename(String fileName)

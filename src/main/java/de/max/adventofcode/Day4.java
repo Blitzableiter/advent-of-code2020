@@ -5,14 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Day4
 {
   public static void main(String[] args)
@@ -176,11 +168,6 @@ public class Day4
       }
     }
 
-    /**
-     * {@inheritDoc}
-     * 
-     * @see java.lang.Object#toString()
-     */
     @Override
     public String toString()
     {

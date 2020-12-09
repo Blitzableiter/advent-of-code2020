@@ -5,14 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Day9
 {
 

@@ -7,14 +7,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * TODO Klasse kommentieren
- * 
- * @author rumforma
- * @version $Revision:$<br/>
- *          $Date:$<br/>
- *          $Author:$
- */
 public class Day7
 {
   static List<String> allRules;
@@ -92,10 +84,6 @@ public class Day7
     return null;
   }
 
-  /**
-   * @param colorToFind
-   * @return
-   */
   private static Integer findBagsInBag(String colorToFind)
   {
     Pattern pattern = Pattern.compile("(.+)contain(.+)\\.$");
