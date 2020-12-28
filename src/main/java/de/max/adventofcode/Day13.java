@@ -2,6 +2,7 @@ package de.max.adventofcode;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,91 +71,74 @@ public class Day13
   private static void part2()
   {
     List<Long> busIds = new ArrayList<>();
-    List<Long> offsets = new ArrayList<>(); // index 0 = offset between bus index 0 and 1
-    String[] busses = input.get(1)
-        .split(",");
-    Long currentOffset = 1L;
-    int lastIndexFilled = Integer.MIN_VALUE;
-
-    // filling the lists of busses and offsets
-    for (int i = 0; i < busses.length; i++)
+    List<Long> offsets = new ArrayList<>(); // offsets index 0 = offset between busIds index 0 and 1
+    Long currentOffset = -1L;
+    for (String bus : input.get(1)
+        .split(","))
     {
-      if (busses[i].equals("x"))
-      {
-        currentOffset++;
-      }
-      else
-      {
-        if (lastIndexFilled != Integer.MIN_VALUE)
-          offsets.add(currentOffset);
-        busIds.add(Long.parseLong(busses[i]));
-        lastIndexFilled = i;
-        currentOffset = 1L;
-      }
+      currentOffset++;
+      if (bus.equals("x"))
+        continue;
+
+      if (!busIds.isEmpty())
+        offsets.add(currentOffset);
+
+      busIds.add(Long.parseLong(bus));
     }
 
-    List<Long> multiples = new ArrayList<>();
-    for (Long busId : busIds)
-      multiples.add(busId);
+    Integer maxBusIdIndex = findIndexOfMaximumBusId(busIds);
 
-    boolean justChanged = false;
+    Long currentDepartureTime = busIds.get(maxBusIdIndex);
+    while (!departureTimesWithOffsets(currentDepartureTime, busIds, offsets, maxBusIdIndex))
+      currentDepartureTime += busIds.get(maxBusIdIndex);
 
-    for (int i = 0; i < busIds.size(); i++)
-    {
-      if (justChanged)
-        multiples.set(i, multiples.get(i) + busIds.get(i));
-
-      // calculate multiples until multiple with offset is evenly divisible by next busId
-      while ((multiples.get(i) + offsets.get(i)) % busIds.get(i + 1) != 0L)
-      {
-        if (multiples.get(i) % 1000 == 0)
-          System.out.println(multiples.get(0));
-        if (i != 0)
-        {
-          i -= 2;
-          justChanged = true;
-          break;
-        }
-
-        multiples.set(i, multiples.get(i) + busIds.get(i));
-      }
-    }
-
-    System.out.println(multiples.get(0));
+    System.out.println("busIds: " + busIds);
+    System.out.println("offsets: " + offsets);
+    System.out.println("currentDepartureTime for maxBusId: " + currentDepartureTime);
+    System.out.println(currentDepartureTime);
+    System.out.println("departure time for busId == 0: "
+        + (currentDepartureTime - offsets.get(maxBusIdIndex - 1)));
   }
 
-  public static List<Long> primeFactors(Long number)
+  /**
+   * @param busIds
+   * @return
+   */
+  private static Integer findIndexOfMaximumBusId(List<Long> busIds)
   {
-    List<Long> primeFactors = new ArrayList<>();
-    for (long i = 2; i < number; i++)
-    {
-      while (number % i == 0)
-      {
-        primeFactors.add(i);
-        number = number / i;
-      }
-    }
-    if (number > 2)
-      primeFactors.add(number);
-
-    return primeFactors;
+    List<Long> ids = new ArrayList<>(busIds);
+    Collections.sort(ids);
+    Long maxBusId = ids.get(ids.size() - 1);
+    for (Integer i = 0; i < busIds.size(); i++)
+      if (busIds.get(i)
+          .equals(maxBusId))
+        return i;
+    return null;
   }
 
-  public static Long lowestCommonMultiple(Long smallerNumber, Long largerNumber)
+  public static boolean departureTimesWithOffsets(Long currentDepartureTime, List<Long> busIds,
+      List<Long> offsets, Integer maxBusIdIndex)
   {
-    if (smallerNumber >= largerNumber)
-      throw new IllegalArgumentException("First argument must be smaller than second argument");
+    if (currentDepartureTime < 0)
+      throw new IllegalStateException("currentDepartureTime < 0: " + currentDepartureTime);
 
-    Long lowestCommonMultiple = 1L;
-    List<Long> largerPrimeFactors = primeFactors(largerNumber);
-    for (Long factor : largerPrimeFactors)
-      lowestCommonMultiple *= factor;
+    for (Integer i = 0; i < busIds.size(); i++)
+    {
+      if (i.equals(maxBusIdIndex))
+        continue;
 
-    for (Long factor : primeFactors(smallerNumber))
-      if (!largerPrimeFactors.contains(factor))
-        lowestCommonMultiple *= factor;
+      Long maxBusIdOffset = offsets.get(maxBusIdIndex - 1);
+      Long currentBusId = busIds.get(i);
+      Long currentBusIdOffset = (i != 0) ? offsets.get(i - 1) : 0L;
 
-    return lowestCommonMultiple;
+      Long busDepartureTime = currentDepartureTime - maxBusIdOffset + currentBusIdOffset;
+
+      if (busDepartureTime % currentBusId != 0)
+        return false;
+
+    }
+
+    return true;
   }
 
 }
